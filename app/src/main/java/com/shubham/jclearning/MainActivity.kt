@@ -12,7 +12,6 @@ import com.shubham.jclearning.screen.AppNavigation
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             MyApp {
                 AppNavigation()

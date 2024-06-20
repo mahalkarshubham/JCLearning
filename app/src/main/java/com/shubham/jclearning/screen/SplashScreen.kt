@@ -45,8 +45,8 @@ fun SplashScreen(navController: NavController) {
                 painter = painter, contentDescription = "SplashImage",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .height(200.dp)
-                    .width(200.dp)
+                    .height(150.dp)
+                    .width(150.dp)
             )
         }
     }
