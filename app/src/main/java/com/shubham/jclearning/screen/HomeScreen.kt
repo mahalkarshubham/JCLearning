@@ -1,7 +1,9 @@
 package com.shubham.jclearning.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,12 +17,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,14 +38,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shubham.jclearning.R
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(
-                text = "Friends List", style = TextStyle(fontSize = 18.sp), color = Color.Gray
+                text = "Friends List", style = TextStyle(fontSize = 18.sp), color = Color.Black
             )
         }, navigationIcon = {
             IconButton(onClick = { /*TODO*/ }) {
@@ -50,11 +53,15 @@ fun HomeScreen() {
                 )
             }
         })
-    }, content = { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            FriendsList()
+    }) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            FriendsList(modifier = Modifier.align(Alignment.TopCenter))
         }
-    })
+    }
 }
 
 data class Friends(
@@ -67,30 +74,26 @@ data class Friends(
 
 val friends = listOf(
     Friends(
-        R.drawable.launcher,
+        R.drawable.ic_launcher_background,
         "Shubham Mahalkar",
         "smahalkar@gmail.com",
         "8087163177",
         "Ch. Sambhaji Nagar"
     ), Friends(
-        R.drawable.launcher,
-        "Shubham Mahalkar",
-        "smahalkar@gmail.com",
-        "8087163177",
+        R.drawable.ic_launcher_background,
+        "Pallavi Mahalkar",
+        "pallavi@gmail.com",
+        "0123456789",
         "Ch. Sambhaji Nagar"
     )
 )
 
 @Composable
-fun FriendsList() {
+fun FriendsList(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier.fillMaxSize(), verticalArrangement = Arrangement.Top
     ) {
-        LazyColumn {
+        LazyColumn(modifier = modifier) {
             items(friends) { friend ->
                 FriendListItem(friends = friend)
             }
@@ -100,10 +103,13 @@ fun FriendsList() {
 
 @Composable
 fun FriendListItem(friends: Friends) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 12.dp, end = 12.dp)
+        .clickable { }
+        .indication(indication = rememberRipple(bounded = true),
+            interactionSource = remember { MutableInteractionSource() }),
+
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -112,9 +118,9 @@ fun FriendListItem(friends: Friends) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .clip(shape = CircleShape)
-                .size(40.dp)
+                .size(45.dp)
         )
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)) {
             Text(
                 text = friends.name,
                 maxLines = 1,
