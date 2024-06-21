@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -100,8 +101,10 @@ val friends = listOf(
     )
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FriendsList(modifier: Modifier = Modifier) {
+    val modalBottomSheetState = rememberModalBottomSheetState()
     var selectedFriend by remember { mutableStateOf<Friends?>(null) }
 
     Column(
@@ -115,16 +118,17 @@ fun FriendsList(modifier: Modifier = Modifier) {
             }
         }
         selectedFriend.let { friendData ->
-            friendData?.let { UserDetailBottomSheet(it) }
+            friendData?.let {
+                UserDetailBottomSheet(friendData, modalBottomSheetState)
+                println("selected data is: ${friendData.name}")
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailBottomSheet(user: Friends) {
-    val modalBottomSheetState = rememberModalBottomSheetState()
-
+fun UserDetailBottomSheet(user: Friends, modalBottomSheetState: SheetState) {
     ModalBottomSheet(
         onDismissRequest = { },
         sheetState = modalBottomSheetState,
